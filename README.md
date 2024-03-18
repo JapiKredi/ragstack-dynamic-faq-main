@@ -1,4 +1,5 @@
 # Build your own RAG Chatbot
+
 Welcome to this workshop to build and deploy your own Chatbot using Retrieval Augmented Generation with Astra DB and the OpenAI Chat Model.
 
 It leverages [DataStax RAGStack](https://docs.datastax.com/en/ragstack/docs/index.html), which is a curated stack of the best open-source software for easing implementation of the RAG pattern in production-ready applications that use Astra Vector DB or Apache Cassandra as a vector store.
@@ -6,22 +7,24 @@ It leverages [DataStax RAGStack](https://docs.datastax.com/en/ragstack/docs/inde
 ![codespace](./assets/chatbot.png)
 
 What you'll learn:
+
 - 🤩 How to leverage [DataStax RAGStack](https://docs.datastax.com/en/ragstack/docs/index.html) for production-ready use of the following components:
-    - 🚀 The [Astra DB Vector Store](https://db.new) for Semantic Similarity search
-    - 🦜🔗 [LangChain](https://www.langchain.com) for linking OpenAI and Astra DB
+  - 🚀 The [Astra DB Vector Store](https://db.new) for Semantic Similarity search
+  - 🦜🔗 [LangChain](https://www.langchain.com) for linking OpenAI and Astra DB
 - 🤖 How to use [OpenAI's Large Language Models](https://platform.openai.com/docs/models) for Q&A style chatbots
 - 👑 How to use [Streamlit](https://streamlit.io) to easily deploy your awesome app to the internet for everyone to see!
 
 - Slides of the presentation can be found [HERE](assets/meetups-slides.pdf)
 
-
-
 ## 1️⃣ Prerequisites
+
 This workshop assumes you have access to:
+
 1. [A Github account](https://github.com)
 2. [Google Colab](https://colab.research.google.com/)
 
 During the course, you'll gain access to the following by signing up for free:
+
 1. [DataStax Astra DB](https://astra.datastax.com) (you can sign up through your Github account)
 2. [OpenAI account](https://platform.openai.com/signup) (you can sign up through your Github account)
 3. [Streamlit](https://streamlit.io) to deploy your amazing app (you can sign up through your Github account)
@@ -29,24 +32,29 @@ During the course, you'll gain access to the following by signing up for free:
 Follow the below steps and provide the **Astra DB API Endpoint**, **Astra DB ApplicationToken** and **OpenAI API Key** when required.
 
 ### Sign up for Astra DB
+
 Make sure you have a vector-capable Astra database (get one for free at [astra.datastax.com](https://astra.datastax.com))
-- You will be asked to provide the **API Endpoint** which can be found in the right pane underneath *Database details*.
-- Ensure you have an **Application Token** for your database which can be created in the right pane underneath *Database details*.
+
+- You will be asked to provide the **API Endpoint** which can be found in the right pane underneath _Database details_.
+- Ensure you have an **Application Token** for your database which can be created in the right pane underneath _Database details_.
 
 ![codespace](./assets/astra.png)
 
 ### Sign up for OpenAI
+
 - Create an [OpenAI account](https://platform.openai.com/signup) or [sign in](https://platform.openai.com/login).
 - Navigate to the [API key page](https://platform.openai.com/account/api-keys) and create a new **Secret Key**, optionally naming the key.
 
 ![codespace](./assets/openai-key.png)
 
 ### Sign up for Streamlit
+
 Follow the steps outlined [here](https://docs.streamlit.io/streamlit-community-cloud/get-started/quickstart).
 
 ![codespace](./assets/streamlit.png)
 
 ## 2️⃣ First try the concepts in a Colab Notebook
+
 To kick this workshop off, we'll first try the concepts in a [Colab Notebook](https://colab.research.google.com/drive/1_n-QZyuP898JNaX7RDnCmw9lkibgEuP-).
 
 This notebook shows the steps to take to use the Astra DB Vector Store as a means to make LLM interactions meaningfull and without hallucinations. The approach taken here is Retrieval Augmented Generation.
@@ -64,20 +72,21 @@ You'll learn:
 ![codespace](./assets/collab.png)
 
 ## 3️⃣ Open this tutorial on Github Codespaces
+
 To make life easier, we'll use the awesome Github Codespace functionality. Github offers you a completely integrated developer experience and resources to get started quickly. How?
 
 1. Open the [build-your-own-rag-agent](https://github.com/michelderu/build-your-own-rag-agent) repository
 2. Click on `Use this template`->`Ceate new repository` as follows:
 
-    ![codespace](./assets/create-new-repository.png)
+   ![codespace](./assets/create-new-repository.png)
 
 3. Now select your github account and name the new repository. Ideally also set the description. Click `Create repository`
 
-    ![codespace](./assets/repository-name.png)
+   ![codespace](./assets/repository-name.png)
 
 4. Cool! You just created a copy in your own Gihub account! Now let's get started with coding. Click `Create codespace on main` as follows:
 
-    ![codespace](./assets/create-codespace.png)
+   ![codespace](./assets/create-codespace.png)
 
 And you're ready to rock and roll! 🥳  
 As Codespaces creates your dev environment based on `Python 3.11`, it will automatically install the Python dependecies from `requirements.txt`. So, no need to `pip install` anything here. It will also set up prt forwarding so you can access subsequent Streamlit apps from anywhere.  
@@ -91,24 +100,27 @@ Let us now build a real application we will use the following architecture
 
 In this workshop we'll use Streamlit which is an amazingly simple to use framework to create front-end web applications.
 
-To get started, let's create a *hello world* application as follows:
+To get started, let's create a _hello world_ application as follows:
 
 ```python
 import streamlit as st
 
 # Draw a title and some markdown
 st.title("Your personal Efficiency Booster")
-st.markdown("""Generative AI is considered to bring the next Industrial Revolution.  
+st.markdown("""Generative AI is considered to bring the next Industrial Revolution.
 Why? Studies show a **37% efficiency boost** in day to day work activities!""")
 ```
+
 The first step is to import the streamlit package. Then we call `st.title` to write a title to the web page and lastly we write some markdown content to the web page using `st.markdown`.
 
 To get this application started locally you'll need to install the streamlit dependency as follows (not needed in Codespaces):
+
 ```bash
 pip install streamlit
 ```
 
 Now run the app:
+
 ```bash
 streamlit run app_1.py
 ```
@@ -120,17 +132,18 @@ Simple, isn't it? 🤩
 ## 5️⃣ Add a Chatbot interface to the app
 
 In this step we'll start preparing the app to allow for chatbot interaction with a user. We'll use the following Streamlit components:
-1. 
+
+1.
 2. `st.chat_input` in order for a user to allow to enter a question
-2. `st.chat_message('human')` to draw the user's input
-3. `st.chat_message('assistant')` to draw the chatbot's response
+3. `st.chat_message('human')` to draw the user's input
+4. `st.chat_message('assistant')` to draw the chatbot's response
 
 This results in the following code:
 
 ```python
 # Draw the chat input box
 if question := st.chat_input("What's up?"):
-    
+
     # Draw the user's question
     with st.chat_message('human'):
         st.markdown(question)
@@ -161,17 +174,19 @@ This is because Streamlit will redraw the whole screen again and again based on 
 In this step we'll make sure to keep track of the questions and answers so that with every redraw the history is shown.
 
 To do this we'll take the next steps:
+
 1. Add the question in a `st.session_state` called `messages`
 2. Add the answer in a `st.session_state` called `messages`
 3. When the app redraws, print out the history using a loop like `for message in st.session_state.messages`
 
 This approach works because the `session_state` is stateful across Streamlit runs.
 
-Check out the complete code in [app_3.py](./app_3.py). 
+Check out the complete code in [app_3.py](./app_3.py).
 
 As you'll see we use a dictionary to store both the `role` (which can be either the Human or the AI) and the `question` or `answer`. Keeping track of the role is important as it will draw the right picture in the browser.
 
 Run it with:
+
 ```bash
 streamlit run app_3.py
 ```
@@ -223,6 +238,7 @@ chain = inputs | prompt | chat_model
 response = chain.invoke({'question': question})
 answer = response.content
 ```
+
 Check out the complete code in [app_4.py](./app_4.py).
 
 Before we continue, we have to provide the `OPENAI_API_KEY` in `./streamlit/secrets.toml`. There is an example provided in `secrets.toml.example`:
@@ -233,11 +249,13 @@ OPENAI_API_KEY = "<YOUR-API-KEY>"
 ```
 
 To get this application started locally you'll need to install several dependencies as follows (not needed in Codespaces):
+
 ```bash
 pip install openai tiktoken astrapy langchain langchain_openai langchain-community
 ```
 
 Now run the app:
+
 ```bash
 streamlit run app_4.py
 ```
@@ -253,6 +271,7 @@ As you will see, you'll receive a very generic answer without the information th
 ## 8️⃣ Combine with the Astra DB Vector Store for additional context
 
 Now things become really interesting! In this step we'll integrate the Astra DB Vector Store in order to provide context in real-time for the Chat Model. Steps taken to implement Retrieval Augmented Generation:
+
 1. User asks a question
 2. A semantic similarity search is run on the Astra DB Vector Store
 3. The retrieved context is provided to the Prompt for the Chat Model
@@ -305,6 +324,7 @@ ASTRA_TOKEN = "<YOUR-TOKEN>"
 ```
 
 And run the app:
+
 ```bash
 streamlit run app_5.py
 ```
@@ -350,6 +370,7 @@ with st.chat_message('assistant'):
 Check out the complete code in [app_6.py](./app_6.py).
 
 And run the app:
+
 ```bash
 streamlit run app_6.py
 ```
@@ -378,7 +399,7 @@ Now we need a function to load the PDF and ingest it into Astra DB while vectori
 # Function for Vectorizing uploaded data into Astra DB
 def vectorize_text(uploaded_file, vector_store):
     if uploaded_file is not None:
-        
+
         # Write to temporary file
         temp_dir = tempfile.TemporaryDirectory()
         file = uploaded_file
@@ -399,18 +420,20 @@ def vectorize_text(uploaded_file, vector_store):
 
         # Vectorize the PDF and load it into the Astra DB Vector Store
         pages = text_splitter.split_documents(docs)
-        vector_store.add_documents(pages)  
+        vector_store.add_documents(pages)
         st.info(f"{len(pages)} pages loaded.")
 ```
 
 Check out the complete code in [app_7.py](./app_7.py).
 
 To get this application started locally you'll need to install the PyPDF dependency as follows (not needed in Codespaces):
+
 ```bash
 pip install pypdf
 ```
 
 And run the app:
+
 ```bash
 streamlit run app_7.py
 ```
@@ -420,26 +443,28 @@ Now upload a PDF document (the more the merrier) that is relevant to you and sta
 ![end-result](./assets/end-result.png)
 
 ## 1️⃣1️⃣ Let's deploy this cool stuff to Streamlit cloud!
+
 In this step we'll deploy your awesome app to the internet so everyone can enjoy your cool work and be amazed!
 
 ### Set up your Streamlit account
+
 If you have not do so before, please set up your account on Streamlit. When you already have an account skip to the next step and deploy the app.
 
 1. Head over to [Streamlit.io](https://streamlit.io) and clikc `Sign up`. Then select `Continue with Github`:
 
-    ![Streamlit](./assets/streamlit-0.png)
+   ![Streamlit](./assets/streamlit-0.png)
 
 2. Log in using your Github credentials:
 
-    ![Streamlit](./assets/streamlit-1.png)
+   ![Streamlit](./assets/streamlit-1.png)
 
 3. Now authorize Streamlit:
 
-    ![Streamlit](./assets/streamlit-2.png)
+   ![Streamlit](./assets/streamlit-2.png)
 
 4. And set up your account:
 
-    ![Streamlit](./assets/streamlit-3.png)
+   ![Streamlit](./assets/streamlit-3.png)
 
 ### Deploy your app
 
@@ -447,11 +472,11 @@ On the main screen, when logged in, click `New app`.
 
 1. When this is your first deployment, provide additional permissions:
 
-    ![Streamlit](./assets/streamlit-4.png)
+   ![Streamlit](./assets/streamlit-4.png)
 
 2. Now define your application settings. Use YOUR repository name, and name the Main file path as `app_7.py`. Pick a cool App URL as you'll app will be deployed to that:
 
-    ![Streamlit](./assets/streamlit-5.png)
+   ![Streamlit](./assets/streamlit-5.png)
 
 3. Click on Advanced, select Python 3.11 and copy-paste the contents from your `secrets.toml`.
 
@@ -460,24 +485,36 @@ Click Deploy! Wait for a bit and your app is online for everyone to use!
 ⛔️ Be aware that this app is public and uses your OpenAI account which will incur cost. You'll want to shield it off by clicking `Settings->Sharing` in the main screen and define the email addresses that are allowed access. In order to enable this, link your Google account.
 
 # Python environments
-In case you want to run all of the above locally, it's useful to create a *Virtual Environment*. Use the below to set it up:
+
+In case you want to run all of the above locally, it's useful to create a _Virtual Environment_. Use the below to set it up:
+
 ```
 python3 -m venv myenv
 ```
+
 Then activate it as follows:
+
 ```
 source myenv/bin/activate   # on Linux/Mac
 myenv\Scripts\activate.bat  # on Windows
 ```
+
 Now you can start installing packages:
+
 ```
 pip3 install -r requirements.txt
 ```
+
 In order to check which packages have been installed:
+
 ```
 pip3 freeze
 ```
+
 Which you can save to requirements.txt if you want:
+
 ```
 pip3 freeze > requirements.txt
 ```
+
+Enjoy!
