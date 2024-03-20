@@ -518,4 +518,3 @@ pip3 freeze > requirements.txt
 ```
 
 Enjoy!
-Enjoy!
